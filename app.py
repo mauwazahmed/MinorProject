@@ -46,24 +46,29 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/', methods=['GET', 'POST'])
-def upload():
+@app.route('/result', methods=['GET', 'POST'])
+def result():
     if request.method == 'POST':
         # Get the data from post request
         data = request.form.to_dict()
         print(data)
         sent0 = data['sent1']
         sent1 = data['sent2']
+        '''
         print('--------------------------------------------------------')
         print(sent0,sent1)
         print('--------------------------------------------------------')
+        '''
         # Make prediction
         corr = get_pred(sent0, sent1)
-                
-        return render_template('index.html', result = {'Correct Sentence': corr})
+        #print(corr)
+        #return corr
+        result = {'Sentence 1':sent0, 'Sentence 2': sent1, 'Correct Sentence':corr}
+
+        return render_template('results.html', result = result)
 
     return None
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
